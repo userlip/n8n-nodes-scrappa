@@ -1,0 +1,79 @@
+{
+  "name": "Scrappa: find local business leads from Google Maps",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "125bc0df-624a-4bf2-b550-2252104b7b98",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "resource": "googleMaps",
+        "operation": "googleMapsSearch",
+        "query": "roofing companies in Austin",
+        "latitude": 30.2672,
+        "longitude": -97.7431,
+        "zoom": 12,
+        "country": "us",
+        "language": "en",
+        "pageZeroBased": 0,
+        "limit": 20,
+        "additionalQueryParameters": "{}"
+      },
+      "id": "32595a8d-db49-49ed-9f1d-61dd5b8ba8f1",
+      "name": "Search Google Maps with Scrappa",
+      "type": "n8n-nodes-scrappa.scrappa",
+      "typeVersion": 1,
+      "position": [260, 0],
+      "credentials": {
+        "scrappaApi": {
+          "id": "SCRAPPA_API_CREDENTIAL_ID",
+          "name": "Scrappa API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $json;\nconst businesses = response.results || response.places || response.data || [];\nreturn businesses.map((business) => ({\n  json: {\n    name: business.name || business.title || '',\n    rating: business.rating || '',\n    reviews: business.reviews || business.review_count || '',\n    phone: business.phone || business.phone_number || '',\n    website: business.website || '',\n    address: business.address || business.full_address || '',\n    businessId: business.business_id || business.place_id || '',\n  },\n}));"
+      },
+      "id": "6ed4f6fa-e71c-4658-8354-4589ee2170a4",
+      "name": "Normalize local leads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Search Google Maps with Scrappa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Google Maps with Scrappa": {
+      "main": [
+        [
+          {
+            "node": "Normalize local leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": []
+}

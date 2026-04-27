@@ -1,0 +1,76 @@
+{
+  "name": "Scrappa: turn Google Search results into lead prospects",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "8d2c7670-7b38-4db1-a11f-1b742b6b5c32",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "resource": "googleSearch",
+        "operation": "googleSearch",
+        "query": "best crm consultants new york",
+        "country": "us",
+        "language": "en",
+        "pageZeroBased": 0,
+        "limit": 10,
+        "additionalQueryParameters": "{}"
+      },
+      "id": "0707189d-8e2d-4dd7-b4fd-1cc0c7a1cc2e",
+      "name": "Search Google with Scrappa",
+      "type": "n8n-nodes-scrappa.scrappa",
+      "typeVersion": 1,
+      "position": [260, 0],
+      "credentials": {
+        "scrappaApi": {
+          "id": "SCRAPPA_API_CREDENTIAL_ID",
+          "name": "Scrappa API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $json;\nconst candidates = response.organic_results || response.results || response.data || [];\nreturn candidates.slice(0, 10).map((result, index) => ({\n  json: {\n    rank: index + 1,\n    title: result.title || result.name || '',\n    url: result.link || result.url || '',\n    snippet: result.snippet || result.description || '',\n    sourceQuery: 'best crm consultants new york',\n  },\n}));"
+      },
+      "id": "7f2a996c-381f-4771-910c-600f41c7207b",
+      "name": "Normalize prospects",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Search Google with Scrappa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Google with Scrappa": {
+      "main": [
+        [
+          {
+            "node": "Normalize prospects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": []
+}

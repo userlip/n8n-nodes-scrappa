@@ -1,0 +1,75 @@
+{
+  "name": "Scrappa: monitor low-rated Trustpilot reviews",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "41409181-f1a9-4ce0-983d-6b9a895d5716",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "resource": "trustpilot",
+        "operation": "trustpilotCompanyReviews",
+        "companyDomain": "example.com",
+        "page": 1,
+        "limit": 20,
+        "rating": "1,2,3",
+        "additionalQueryParameters": "{}"
+      },
+      "id": "9f4d596b-843c-4c20-a076-b450183949ea",
+      "name": "Fetch Trustpilot reviews with Scrappa",
+      "type": "n8n-nodes-scrappa.scrappa",
+      "typeVersion": 1,
+      "position": [260, 0],
+      "credentials": {
+        "scrappaApi": {
+          "id": "SCRAPPA_API_CREDENTIAL_ID",
+          "name": "Scrappa API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $json;\nconst reviews = response.reviews || response.results || response.data || [];\nreturn reviews.map((review) => ({\n  json: {\n    rating: review.rating || review.stars || '',\n    title: review.title || '',\n    text: review.text || review.content || review.review || '',\n    author: review.consumer?.displayName || review.author || '',\n    date: review.date || review.published_at || '',\n    url: review.url || review.link || '',\n  },\n}));"
+      },
+      "id": "64738b99-8489-4b23-a869-a2ec44d61b9b",
+      "name": "Normalize review alerts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Fetch Trustpilot reviews with Scrappa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Trustpilot reviews with Scrappa": {
+      "main": [
+        [
+          {
+            "node": "Normalize review alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": []
+}
