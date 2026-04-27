@@ -63,6 +63,14 @@ Use an endpoint that does not have a dedicated operation yet:
 2. Set **Custom Endpoint Path** to a Scrappa API path like `/api/google/news`.
 3. Add query parameters as JSON in **Additional Query Parameters**.
 
+## Workflow Templates
+
+Import these JSON templates directly into n8n:
+
+- [Turn Google Search results into lead prospects](templates/google-search-to-leads.json)
+- [Find local business leads from Google Maps](templates/google-maps-local-lead-finder.json)
+- [Monitor low-rated Trustpilot reviews](templates/trustpilot-review-monitor.json)
+
 ## Links
 
 - Scrappa: https://scrappa.co
