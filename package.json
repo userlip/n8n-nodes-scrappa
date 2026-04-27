@@ -1,0 +1,60 @@
+{
+  "name": "n8n-nodes-scrappa",
+  "version": "0.1.1",
+  "description": "n8n community node for Scrappa web scraping, search, maps, video, LinkedIn, and review data APIs.",
+  "author": {
+    "name": "Scrappa"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/userlip/n8n-nodes-scrappa#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/userlip/n8n-nodes-scrappa.git"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "scrappa",
+    "scraping",
+    "google-search",
+    "google-maps",
+    "linkedin",
+    "trustpilot",
+    "youtube"
+  ],
+  "main": "dist/nodes/Scrappa/Scrappa.node.js",
+  "types": "dist/nodes/Scrappa/Scrappa.node.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "n8n-node build",
+    "build:tsc": "tsc -p tsconfig.json",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "scan": "npx @n8n/scan-community-package n8n-nodes-scrappa"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/ScrappaApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Scrappa/Scrappa.node.js"
+    ]
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "^0.27.0",
+    "eslint": "^9.39.4",
+    "n8n-workflow": "^2.16.0",
+    "typescript": "^5.8.3"
+  },
+  "bugs": {
+    "url": "https://github.com/userlip/n8n-nodes-scrappa/issues"
+  }
+}
