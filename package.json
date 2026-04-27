@@ -1,9 +1,10 @@
 {
   "name": "n8n-nodes-scrappa",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "n8n community node for Scrappa web scraping, search, maps, video, LinkedIn, and review data APIs.",
   "author": {
-    "name": "Scrappa"
+    "name": "Scrappa",
+    "email": "hello@marin.sh"
   },
   "license": "MIT",
   "homepage": "https://github.com/userlip/n8n-nodes-scrappa#readme",
